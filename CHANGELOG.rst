@@ -1,7 +1,7 @@
 Release Notes
 =============
 
-0.0.1 (unreleased)
+0.1.0 (unreleased)
 ---------------------
 
 - Decorator for caching loading dataframes, :func:`mltome.cache.from_dataframe_cache`.
