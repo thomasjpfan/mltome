@@ -7,9 +7,9 @@ A collection of Mtools that builds on Python ML frameworks.
     :target: https://circleci.com/gh/thomasjpfan/mltome
     :alt: CI Status
 
-.. image:: https://coveralls.io/repos/github/thomasjpfan/mltome/badge.svg
-    :target: https://coveralls.io/github/thomasjpfan/mltome
-    :alt: Coveralls Status
+.. image:: https://codecov.io/gh/thomasjpfan/mltome/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/thomasjpfan/mltome
+    :alt: Codecov Status
 
 Features
 --------
