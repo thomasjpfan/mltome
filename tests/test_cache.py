@@ -21,22 +21,23 @@ def test_dataframe_cache_saves_to_cache(tmpdir):
     assert output.equals(expected_df)
     assert target.exists()
 
-    before_mtime = target.stat().st_mtime
+    before_mtime = target.stat().st_atime
     output = get_target(param)
-    after_mtime = target.stat().st_mtime
+    after_mtime = target.stat().st_atime
     assert before_mtime == after_mtime
 
 
 def test_dataframe_cache_updates_cache_with_force(tmpdir):
     target = Path(tmpdir.mkdir('cache').join('output2.parq'))
+    target.touch()
+    previous_target_size = target.stat().st_size
+
     param = {'target': target, 'multiplier': 2}
 
     expected_df = pd.DataFrame({"a": [2, 4, 6]})
-    output = get_target(param)
+    output = get_target(param, force=True)
     assert output.equals(expected_df)
     assert target.exists()
 
-    before_mtime = target.stat().st_mtime
-    output = get_target(param, force=True)
-    after_mtime = target.stat().st_mtime
-    assert before_mtime != after_mtime
+    new_target_size = target.stat().st_size
+    assert previous_target_size == new_target_size
