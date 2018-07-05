@@ -10,7 +10,7 @@ test_py: &test_py
         command: |
           python -m venv venv
           . venv/bin/activate
-          pip install -q -e .[dev]
+          pip install -e .[dev]
     - save_cache:
         key: v1-dependency-cache-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}
         paths:
