@@ -2,6 +2,7 @@ name: mltome_dev
 
 channels:
   - pytorch
+  - conda-forge
 
 dependencies:
   - python=3.6
