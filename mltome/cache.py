@@ -6,7 +6,7 @@ import pandas as pd
 
 def from_dataframe_cache(key):
     """Returns a decorator that wraps a function with signature,
-    (params: dict, force: bool, **kwargs) that returns a pandas
+    (params: dict, force: bool, kwargs) that returns a pandas
     Dataframe.
 
     The ``params[key]`` should be a :class:`pathlib.Path` to
@@ -14,10 +14,11 @@ def from_dataframe_cache(key):
 
     Parameters
     ----------
-    key: string
+    key: str
         key to query ``params`` to get path of cache
 
     """
+
     def cache_decorator(f):
         @wraps(f)
         def wrapper(params, force=False, **kwargs):
@@ -27,5 +28,7 @@ def from_dataframe_cache(key):
             output = f(params, force, **kwargs)
             output.to_parquet(fn)
             return output
+
         return wrapper
+
     return cache_decorator
