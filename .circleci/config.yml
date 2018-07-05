@@ -4,15 +4,15 @@ test_py: &test_py
   steps:
     - checkout
     - restore_cache:
-        key: v1-dependency-cache-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}
+        key: v1-dependency-cache-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}-{{ checksum "scripts/install_deps_circleci.sh" }}
     - run:
         name: Install dependencies
         command: |
           python -m venv venv
           . venv/bin/activate
-          pip install -e .[dev]
+          sh scripts/install_deps_circleci.sh
     - save_cache:
-        key: v1-dependency-cache-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}
+        key: v1-dependency-cache-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/dev.txt" }}-{{ checksum "scripts/install_deps_circleci.sh" }}
         paths:
           - "venv"
     - run:
