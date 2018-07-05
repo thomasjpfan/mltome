@@ -14,8 +14,9 @@ A collection of Mtools that builds on Python ML frameworks.
 Features
 --------
 
-* Decorator for caching loading dataframes, :func:`mltome.cache.from_dataframe_cache`.
-* Pytorch utility to set gradidents :func:`mltome.pytorch.set_requires_grad`.
+- Decorator for caching loading dataframes, :func:`mltome.cache.from_dataframe_cache`.
+- Pytorch utility to set gradidents, :func:`mltome.pytorch.set_requires_grad`
+- Pytorch utility to simulate learning rates, :func:`mltome.pytorch.simulate_lrs`
 
 
 Installation
