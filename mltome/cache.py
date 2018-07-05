@@ -29,4 +29,3 @@ def from_dataframe_cache(key):
             return output
         return wrapper
     return cache_decorator
-
