@@ -26,6 +26,14 @@ You can install mltome directly from pypi:
 
     pip install mltome
 
+PyTorch
+-------
+
+For installation
+instructions for PyTorch, visit the `PyTorch website
+<http://pytorch.org/>`__.
+
+
 Development
 -----------
 

@@ -11,6 +11,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.intersphinx']
 
 intersphinx_mapping = {
+    'pytorch': ('https://pytorch.org/docs/stable/', None),
     'python': ('https://docs.python.org/3', None),
     'numpy': ('http://docs.scipy.org/doc/numpy/', None),
 }
