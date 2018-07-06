@@ -21,10 +21,15 @@ def test_dataframe_cache_saves_to_cache(tmpdir):
     assert output.equals(expected_df)
     assert target.exists()
 
-    before_mtime = target.stat().st_atime
+    with target.open(mode='rb') as f:
+        before = f.read()
+
     output = get_target(param)
-    after_mtime = target.stat().st_atime
-    assert before_mtime == after_mtime
+
+    with target.open(mode='rb') as f:
+        after = f.read()
+
+    assert before == after
 
 
 def test_dataframe_cache_updates_cache_with_force(tmpdir):
@@ -40,4 +45,4 @@ def test_dataframe_cache_updates_cache_with_force(tmpdir):
     assert target.exists()
 
     new_target_size = target.stat().st_size
-    assert previous_target_size == new_target_size
+    assert previous_target_size != new_target_size
