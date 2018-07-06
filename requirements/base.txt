@@ -7,3 +7,4 @@ matplotlib>=2.2.2
 munch>=2.3.2
 sacred>=0.7.3
 pyyaml>=3.12
+tensorboardX>=1.2
