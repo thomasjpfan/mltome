@@ -1,6 +1,6 @@
 from deepsense import neptune
 from sacred.observers.base import RunObserver
-from .skorch import MetricsLogger
+from .skorch.callbacks import MetricsLogger
 
 
 class NeptuneObserver(RunObserver):
