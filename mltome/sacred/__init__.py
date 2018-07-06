@@ -6,14 +6,7 @@ from .config import (add_common_config, add_monogodb, add_neptune_observers,
 from mltome import get_params
 
 
-def generate_experiment_params_from_env(name,
-                                        tags=None,
-                                        record_local=True,
-                                        mongodb_url="",
-                                        mongodb_name="",
-                                        pushuser_token="",
-                                        pushover_token="",
-                                        use_neptune=False):
+def generate_experiment_params_from_env(name, tags=None, record_local=True):
     if tags is None:
         tags = []
     exp = Experiment(name)

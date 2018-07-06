@@ -187,19 +187,19 @@ class TensorboardXLogger(MetricsLogger):
         self.batch_target_to_name_ = {}
         for g, t in product(self.batch_groups, self.batch_targets):
             if t.endswith(g):
-                self.batch_target_to_name[t] = 'batch_' + g
+                self.batch_target_to_name_[t] = 'batch_' + g
 
         self.epoch_target_to_name_ = {}
         for g, t in product(self.epoch_groups, self.epoch_targets):
             if t.endswith(g):
-                self.epoch_target_to_name[t] = 'epoch_' + g
+                self.epoch_target_to_name_[t] = 'epoch_' + g
 
     def update_batch_values(self, values, idx):
         vgroups = defaultdict(dict)
         for name, value in values.items():
             self.writer_.add_scalar(f'batch/{name}', value, idx)
             with suppress(KeyError):
-                group = self.batch_target_to_name[name]
+                group = self.batch_target_to_name_[name]
                 vgroups[group][name] = value
 
         for group, values in vgroups.items():
@@ -210,7 +210,7 @@ class TensorboardXLogger(MetricsLogger):
         for name, value in values.items():
             self.writer_.add_scalar(f'epoch/{name}', value, idx)
             with suppress(KeyError):
-                group = self.epoch_target_to_name[name]
+                group = self.epoch_target_to_name_[name]
                 vgroups[group][name] = value
 
         for group, values in vgroups.items():
