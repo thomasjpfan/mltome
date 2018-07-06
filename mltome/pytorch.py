@@ -1,6 +1,7 @@
 """Pytorch utilities"""
 import numpy as np
 import torch
+import matplotlib.pyplot as plt
 
 
 def set_requires_grad(module, name, value):
@@ -57,3 +58,10 @@ def simulate_lrs(lr_sch_class, steps, initial_lr, **kwargs):
         lrs.append(sch.get_lr()[0])
 
     return np.array(lrs)
+
+
+def plot_lrs(lr_sch_class, steps, by_epoch, ax=None, **kwargs):
+    if ax is None:
+        _, ax = plt.subplots()
+    lrs = simulate_lrs(lr_sch_class, steps, by_epoch, **kwargs)
+    ax.plot(lrs)
