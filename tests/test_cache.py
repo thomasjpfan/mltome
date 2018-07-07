@@ -13,7 +13,7 @@ def get_target(params, force=False, **kwargs):
 
 
 def test_dataframe_cache_saves_to_cache(tmpdir):
-    target = Path(tmpdir.mkdir('cache').join('output.parq'))
+    target = Path(tmpdir.mkdir('cache').join('output.fthr'))
     param = {'target': target, 'multiplier': 2}
 
     expected_df = pd.DataFrame({"a": [2, 4, 6]})
@@ -33,7 +33,7 @@ def test_dataframe_cache_saves_to_cache(tmpdir):
 
 
 def test_dataframe_cache_updates_cache_with_force(tmpdir):
-    target = Path(tmpdir.mkdir('cache').join('output2.parq'))
+    target = Path(tmpdir.mkdir('cache').join('output2.fthr'))
     target.touch()
     previous_target_size = target.stat().st_size
 

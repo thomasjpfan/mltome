@@ -8,9 +8,9 @@ dependencies:
   - python=3.6
   - numpy=1.13.*
   - pandas=0.23.*
-  - pyarrow=0.9.*
   - pytorch=0.4.0
   - matplotlib=2.2.*
+  - feather-format=0.4.*
   - pyyaml=3.12
   - pip:
     - skorch==0.2.0

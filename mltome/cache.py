@@ -1,7 +1,7 @@
 """Caching utilities"""
 from functools import wraps
 
-import pandas as pd
+import feather
 
 
 def from_dataframe_cache(key):
@@ -24,9 +24,9 @@ def from_dataframe_cache(key):
         def wrapper(params, force=False, **kwargs):
             fn = params[key]
             if fn.exists() and not force:
-                return pd.read_parquet(fn)
+                return feather.read_dataframe(fn)
             output = f(params, force, **kwargs)
-            output.to_parquet(fn)
+            feather.write_dataframe(output, fn)
             return output
 
         return wrapper
