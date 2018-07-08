@@ -12,15 +12,9 @@ class CSVObserver(RunObserver):
 
     COLS = ['model_id', 'start_time', 'delta_time', 'train', 'valid']
 
-    def started_event(self, ex_info, command, host_info, start_time, config,
-                      meta_info, _id):
-        if command not in ['train', 'train_hp']:
-            self.record_local = False
-            return
-        self.results_fn = 'artifacts/results.csv'
-        self.model_id = config['model_id'] + '_' + command
-        self.start_time = start_time
-        self.record_local = config['record_local']
+    def __init__(self, results_fn):
+        super().__init__()
+        self.results_fn = results_fn
 
         if os.path.exists(self.results_fn):
             return
@@ -28,6 +22,23 @@ class CSVObserver(RunObserver):
             writer = csv.DictWriter(
                 f, fieldnames=self.COLS, quoting=csv.QUOTE_NONNUMERIC)
             writer.writeheader()
+
+    def started_event(self, ex_info, command, host_info, start_time, config,
+                      meta_info, _id):
+        if command not in ['train', 'train_hp']:
+            self.record_local = False
+            return
+        try:
+            self.model_id = config['model_id'] + '_' + command
+        except KeyError:
+            self.model_id = f'{_id}_{command}'
+
+        self.start_time = start_time
+
+        try:
+            self.record_local = config['record_local']
+        except KeyError:
+            self.record_local = False
 
     def completed_event(self, stop_time, result):
         if not result or len(result) != 2 or not self.record_local:
@@ -55,7 +66,10 @@ class ArtifactObserver(RunObserver):
 
     def started_event(self, ex_info, command, host_info, start_time, config,
                       meta_info, _id):
-        run_dir = config['run_dir']
+        try:
+            run_dir = config['run_dir']
+        except KeyError:
+            raise EnvironmentError(f'run_id must exist to predict')
 
         if command == 'predict' and not os.path.exists(run_dir):
             raise EnvironmentError(f'run_id must exist to predict')

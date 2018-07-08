@@ -1,10 +1,7 @@
 """Skorch callbacks"""
-import os
 from itertools import product
 from collections import defaultdict
 from contextlib import suppress
-
-from tensorboardX import SummaryWriter
 
 from skorch.callbacks.base import Callback
 
@@ -182,6 +179,8 @@ class TensorboardXLogger(MetricsLogger):
             batch_targets=batch_targets, epoch_targets=epoch_targets)
 
     def initialize(self):
+        from tensorboardX import SummaryWriter
+
         self.writer_ = SummaryWriter(log_dir=self.log_dir)
         self.batch_target_to_name_ = {}
         for g, t in product(self.batch_groups, self.batch_targets):

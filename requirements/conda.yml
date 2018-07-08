@@ -14,6 +14,5 @@ dependencies:
   - pyyaml=3.12
   - pip:
     - skorch==0.2.0
-    - tensorboardX==1.2.*
     - munch==2.3.2
     - sacred==0.7.3

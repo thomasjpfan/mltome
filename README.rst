@@ -21,10 +21,11 @@ You can install mltome directly from pypi:
 
     pip install git+https://github.com/thomasjpfan/mltome
 
-PyTorch
--------
+Additional Features
+-------------------
 
-For installation
+- TensorboardXLogger - `pip install tensorboardX`
+- Pytorch - For installation
 instructions for PyTorch, visit the `PyTorch website
 <http://pytorch.org/>`__.
 

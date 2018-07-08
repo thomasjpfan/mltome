@@ -9,7 +9,7 @@ from .observers import CSVObserver, ArtifactObserver
 from mltome.logging import get_stream_logger
 
 
-def add_common_config(exp, record_local=True):
+def add_common_config(exp, csv_fn, record_local=True):
     exp.add_config(
         run_id=datetime.datetime.utcnow().strftime('%Y%m%d_%H%M%S'),
         record_local=record_local,
@@ -21,7 +21,7 @@ def add_common_config(exp, record_local=True):
         run_dir = os.path.join('artifacts', model_id)  # noqa
 
     exp.logger = get_stream_logger(exp.path)
-    exp.observers.append(CSVObserver())
+    exp.observers.append(CSVObserver(csv_fn))
     exp.observers.append(ArtifactObserver(exp.logger))
     exp.captured_out_filter = apply_backspaces_and_linefeeds
 
