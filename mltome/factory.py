@@ -37,7 +37,7 @@ def get_neptune_skorch_callback(batch_targets=None, epoch_targets=None):
     if use_neptune != 'true':
         return None
 
-    from exp.utils.neptune import NeptuneSkorchCallback
+    from mltome.neptune import NeptuneSkorchCallback
     return NeptuneSkorchCallback(batch_targets=batch_targets,
                                  epoch_targets=epoch_targets)
 

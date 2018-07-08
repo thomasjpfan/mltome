@@ -1,13 +1,16 @@
-from deepsense import neptune
 from sacred.observers.base import RunObserver
 from .skorch.callbacks import MetricsLogger
 
 
 class NeptuneObserver(RunObserver):
 
+    def __init__(self):
+        super().__init__()
+        from deepsense import neptune
+        self.ctx = neptune.Context()
+
     def started_event(self, ex_info, command, host_info, start_time,
                       config, meta_info, _id):
-        self.ctx = neptune.Context()
         self.ctx.properties['model_id'] = config['model_id'] + '_' + command
 
         tags = config.get("tags") or []
@@ -24,10 +27,12 @@ class NeptuneObserver(RunObserver):
 class NeptuneSkorchCallback(MetricsLogger):
 
     def __init__(self, batch_targets=None, epoch_targets=None):
-        self.ctx = neptune.Context()
-
         super().__init__(
             batch_targets=batch_targets, epoch_targets=epoch_targets)
+
+    def initialize(self):
+        from deepsense import neptune
+        self.ctx = neptune.Context()
 
     def update_batch_values(self, values, idx):
         for name, value in values.items():
