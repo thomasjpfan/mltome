@@ -43,7 +43,8 @@ def get_neptune_skorch_callback(batch_targets=None, epoch_targets=None):
 
 
 def get_classification_skorch_callbacks(
-        model_id, checkpoint_fn, history_fn, pgroups, artifacts_dir='artifacts/run', per_epoch=True):
+        model_id, checkpoint_fn, history_fn,
+        pgroups, artifacts_dir='artifacts/run', per_epoch=True):
 
     pgroup_names = [item[0] + "_lr" for item in pgroups]
     tensorboard_log_dir = os.path.join(artifacts_dir, model_id)

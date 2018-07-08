@@ -1,5 +1,3 @@
-import logging
-
 from sacred import Experiment
 
 from mltome.sacred.config import add_common_config, add_monogodb
