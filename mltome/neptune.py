@@ -4,10 +4,13 @@ from .skorch.callbacks import MetricsLogger
 
 class NeptuneObserver(RunObserver):
 
-    def __init__(self):
+    def __init__(self, ctx=None):
         super().__init__()
-        from deepsense import neptune
-        self.ctx = neptune.Context()
+        if ctx is not None:
+            self.ctx = ctx
+        else:
+            from deepsense import neptune
+            self.ctx = neptune.Context()
 
     def started_event(self, ex_info, command, host_info, start_time,
                       config, meta_info, _id):

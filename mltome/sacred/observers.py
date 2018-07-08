@@ -1,7 +1,6 @@
 import os
 import csv
 
-import pandas as pd
 import numpy as np
 from sacred.observers.base import RunObserver
 
@@ -19,8 +18,7 @@ class CSVObserver(RunObserver):
         if os.path.exists(self.results_fn):
             return
         with open(self.results_fn, 'w') as f:
-            writer = csv.DictWriter(
-                f, fieldnames=self.COLS, quoting=csv.QUOTE_NONNUMERIC)
+            writer = csv.DictWriter(f, fieldnames=self.COLS)
             writer.writeheader()
 
     def started_event(self, ex_info, command, host_info, start_time, config,
@@ -51,13 +49,30 @@ class CSVObserver(RunObserver):
             'train': result[1],
             'valid': result[0]
         }
-        with open(self.results_fn, 'r') as f:
-            df = pd.read_csv(f, index_col='model_id')
 
-        new_row = pd.Series(result)
-        df.loc[self.model_id] = new_row
+        target_row = None
+        rows = []
+        with open(self.results_fn, 'r') as f:
+            reader = csv.DictReader(f, fieldnames=self.COLS)
+            next(reader)
+            for i, row in enumerate(reader):
+                rows.append(row)
+                if row['model_id'] == self.model_id:
+                    target_row = i
+
+        if target_row is None:
+            with open(self.results_fn, 'a') as f:
+                writer = csv.DictWriter(f, fieldnames=self.COLS)
+                writer.writerow(result)
+            return
+
+        del rows[target_row]
+        rows.append(result)
         with open(self.results_fn, 'w') as f:
-            df.to_csv(f)
+            writer = csv.DictWriter(f, fieldnames=self.COLS)
+            writer.writeheader()
+            for row in rows:
+                writer.writerow(row)
 
 
 class ArtifactObserver(RunObserver):
@@ -69,7 +84,7 @@ class ArtifactObserver(RunObserver):
         try:
             run_dir = config['run_dir']
         except KeyError:
-            raise EnvironmentError(f'run_id must exist to predict')
+            raise EnvironmentError(f'No run_dir defined')
 
         if command == 'predict' and not os.path.exists(run_dir):
             raise EnvironmentError(f'run_id must exist to predict')
