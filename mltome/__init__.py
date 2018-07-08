@@ -45,6 +45,7 @@ def get_classification_skorch_callbacks(
         model_id, checkpoint_fn, history_fn, pgroups, per_epoch=True):
 
     pgroup_names = [item[0] + "_lr" for item in pgroups]
+    tensorboard_log_dir = os.path.join('artifacts/run', model_id)
 
     batch_targets = ['train_loss']
     epoch_targets = ['train_acc', 'valid_acc']
@@ -59,7 +60,7 @@ def get_classification_skorch_callbacks(
             on_train=True),
         LRRecorder(group_names=pgroup_names),
         TensorboardXLogger(
-            model_id,
+            tensorboard_log_dir,
             batch_targets=batch_targets,
             epoch_targets=epoch_targets,
             epoch_groups=['acc']),

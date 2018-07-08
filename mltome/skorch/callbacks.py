@@ -166,13 +166,12 @@ class TensorboardXLogger(MetricsLogger):
     """
 
     def __init__(self,
-                 name,
+                 log_dir,
                  batch_targets=None,
                  epoch_targets=None,
                  batch_groups=None,
-                 epoch_groups=None,
-                 root_dir='artifacts/runs'):
-        self.log_dir = os.path.join(root_dir, name)
+                 epoch_groups=None):
+        self.log_dir = log_dir
 
         self.batch_groups = batch_groups or []
         self.epoch_groups = epoch_groups or []
