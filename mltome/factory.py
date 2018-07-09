@@ -8,6 +8,7 @@ from munch import munchify
 from skorch.callbacks import EpochScoring
 from skorch.callbacks import Checkpoint
 
+from .neptune import NeptuneSkorchCallback
 from .skorch.callbacks import LRRecorder, HistorySaver, TensorboardXLogger
 
 
@@ -37,7 +38,6 @@ def get_neptune_skorch_callback(batch_targets=None, epoch_targets=None):
     if use_neptune != 'true':
         return None
 
-    from mltome.neptune import NeptuneSkorchCallback
     return NeptuneSkorchCallback(batch_targets=batch_targets,
                                  epoch_targets=epoch_targets)
 

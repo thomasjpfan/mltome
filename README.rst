@@ -21,13 +21,29 @@ You can install mltome directly from pypi:
 
     pip install git+https://github.com/thomasjpfan/mltome
 
-Additional Features
--------------------
-
-- TensorboardXLogger - `pip install tensorboardX`
-- Pytorch - For installation
+- ``mltome.pytorch`` - For installation
 instructions for PyTorch, visit the `PyTorch website
 <http://pytorch.org/>`__.
+
+Additional Installation
+-----------------------
+
+- ``mltome.skorch.TensorboardXLogger`` - ``pip install tensorboardX``
+- ``mltome.neptune.NeptuneSkorchCallback`` - ``pip install neptune-cli``
+- ``mltome.skorch.callbacks.HistorySaver`` - ``pip install git+https://github.com/dnouri/skorch@24ac0d1392306da2337174eba206446fab7b179c``
+- ``mltome.config.add_pushover_handler`` - ``pip install notifiers``
+- ``mltome.config.add_monogodb`` - ``pip install pymongo``
+
+Usage
+-----
+
+``mltome.sacred.generate_experiment_params_from_env`` is used to generate a skorch experiment
+It uses the following env variables:
+
+- ``MONGODB_NAME`` and ``MONGODB_URL`` for the database name and the url for a mongodb server to be used with sacred.
+- ``NOTIFIERS_PUSHOVER_USER`` and ``NOTIFIERS_PUSHOVER_TOKEN`` to push notifications to pushover.
+- Setting ``USE_NEPTUNE`` equal to ``true`` will send stats to `neptune.ml <https://neptune.ml>`_.
+- ``mltome.get_neptune_skorch_callback`` also uses ``USE_NEPTUNE`` to configure a skorch callback for deep learning.
 
 
 Development
