@@ -34,7 +34,8 @@ def get_params(root_dir=".",
 
 def get_classification_skorch_callbacks(
         model_id, checkpoint_fn, history_fn,
-        pgroups, neptune_ctx=None, artifacts_dir='artifacts/run', per_epoch=True):
+        pgroups, neptune_ctx=None, artifacts_dir='artifacts/run',
+        per_epoch=True):
 
     pgroup_names = [item[0] + "_lr" for item in pgroups]
     tensorboard_log_dir = os.path.join(artifacts_dir, model_id)
