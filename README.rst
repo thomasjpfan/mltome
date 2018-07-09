@@ -1,7 +1,7 @@
 mltome
 ======
 
-A collection of Mtools that builds on Python ML frameworks. The API of these tools are **not** stable!
+A collection of ML tools that builds on Python ML frameworks. The API of these tools are **not** stable!
 
 .. image:: https://circleci.com/gh/thomasjpfan/mltome.svg?style=shield
     :target: https://circleci.com/gh/thomasjpfan/mltome
