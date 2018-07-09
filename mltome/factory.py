@@ -32,19 +32,9 @@ def get_params(root_dir=".",
     return munchify(params)
 
 
-def get_neptune_skorch_callback(batch_targets=None, epoch_targets=None):
-    use_neptune = os.environ.get('USE_NEPTUNE')
-
-    if use_neptune != 'true':
-        return None
-
-    return NeptuneSkorchCallback(batch_targets=batch_targets,
-                                 epoch_targets=epoch_targets)
-
-
 def get_classification_skorch_callbacks(
         model_id, checkpoint_fn, history_fn,
-        pgroups, artifacts_dir='artifacts/run', per_epoch=True):
+        pgroups, neptune_ctx=None, artifacts_dir='artifacts/run', per_epoch=True):
 
     pgroup_names = [item[0] + "_lr" for item in pgroups]
     tensorboard_log_dir = os.path.join(artifacts_dir, model_id)
@@ -70,9 +60,11 @@ def get_classification_skorch_callbacks(
         HistorySaver(target=history_fn)
     ]
 
-    neptune_callback = get_neptune_skorch_callback(
-        batch_targets=batch_targets, epoch_targets=epoch_targets)
-    if neptune_callback is not None:
+    if neptune_ctx is not None:
+        neptune_callback = NeptuneSkorchCallback(
+                neptune_ctx,
+                batch_targets=batch_targets,
+                epoch_targets=epoch_targets)
         callbacks.append(neptune_callback)
 
     return callbacks

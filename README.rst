@@ -34,18 +34,6 @@ Additional Installation
 - ``mltome.config.add_pushover_handler`` - ``pip install notifiers``
 - ``mltome.config.add_monogodb`` - ``pip install pymongo``
 
-Usage
------
-
-``mltome.sacred.generate_experiment_params_from_env`` is used to generate a skorch experiment
-It uses the following env variables:
-
-- ``MONGODB_NAME`` and ``MONGODB_URL`` for the database name and the url for a mongodb server to be used with sacred.
-- ``NOTIFIERS_PUSHOVER_USER`` and ``NOTIFIERS_PUSHOVER_TOKEN`` to push notifications to pushover.
-- Setting ``USE_NEPTUNE`` equal to ``true`` will send stats to `neptune.ml <https://neptune.ml>`_.
-- ``mltome.get_neptune_skorch_callback`` also uses ``USE_NEPTUNE`` to configure a skorch callback for deep learning.
-
-
 Development
 -----------
 

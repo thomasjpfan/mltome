@@ -41,7 +41,7 @@ def add_pushover_handler(log, pushover_user_token, pushover_token):
         log.addHandler(h)
 
 
-def add_neptune_observers(observers, use_neptune):
-    if use_neptune:
+def add_neptune_observers(observers, ctx=None):
+    if ctx is not None:
         from mltome.neptune import NeptuneObserver
-        observers.append(NeptuneObserver())
+        observers.append(NeptuneObserver(ctx))

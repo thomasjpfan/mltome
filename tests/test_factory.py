@@ -3,7 +3,7 @@ import yaml
 from mltome import get_params, get_classification_skorch_callbacks
 
 
-def test_generate_experiment_params_from_env(tmpdir):
+def test_get_params(tmpdir):
     root_dir = tmpdir.mkdir('root')
     config_fn = root_dir.join('neptune.yml')
 
