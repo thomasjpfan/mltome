@@ -34,7 +34,7 @@ def get_params(root_dir=".",
 
 def get_classification_skorch_callbacks(
         model_id, checkpoint_fn, history_fn,
-        pgroups, neptune_ctx=None, artifacts_dir='artifacts/run',
+        pgroups, log_func=print, neptune_ctx=None, artifacts_dir='artifacts/run',
         per_epoch=True):
 
     pgroup_names = [item[0] + "_lr" for item in pgroups]
@@ -57,7 +57,7 @@ def get_classification_skorch_callbacks(
             batch_targets=batch_targets,
             epoch_targets=epoch_targets,
             epoch_groups=['acc']),
-        Checkpoint(target=checkpoint_fn),
+        Checkpoint(target=checkpoint_fn, sink=log_func),
         HistorySaver(target=history_fn)
     ]
 
