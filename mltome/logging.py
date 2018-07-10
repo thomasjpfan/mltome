@@ -1,6 +1,6 @@
 import logging
 
-LOGGING_FORMAT = '%(message)s'
+LOGGING_FORMAT = '%(levelname)s: %(message)s'
 
 
 def get_log_file_handler(log_fn, level=logging.INFO):
@@ -10,12 +10,12 @@ def get_log_file_handler(log_fn, level=logging.INFO):
     return file_handler
 
 
-def get_stream_logger(name):
+def get_stream_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(level)
 
     stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
+    stream_handler.setLevel(level)
     stream_handler.setFormatter(logging.Formatter(LOGGING_FORMAT))
 
     logger.addHandler(stream_handler)
