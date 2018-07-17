@@ -17,11 +17,12 @@ test_py: &test_py
           . venv/bin/activate
           sh scripts/install_deps_circleci.sh
     - save_cache:
-        key: v1-dependency-cache
-        -{{ checksum "requirements/base.txt" }}
-        -{{ checksum "requirements/dev.txt" }}
-        -{{ checksum "scripts/install_deps_circleci.sh" }}
-        -{{ .Environment.PY_VERSION }}
+        key: >
+          v1-dependency-cache
+          -{{ checksum "requirements/base.txt" }}
+          -{{ checksum "requirements/dev.txt" }}
+          -{{ checksum "scripts/install_deps_circleci.sh" }}
+          -{{ .Environment.PY_VERSION }}
         paths:
           - "venv"
     - run:
