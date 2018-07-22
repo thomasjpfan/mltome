@@ -1,7 +1,7 @@
 """Caching utilities"""
 from functools import wraps
 
-import feather
+import pandas as pd
 
 
 def from_dataframe_cache(key):
@@ -23,10 +23,22 @@ def from_dataframe_cache(key):
         @wraps(f)
         def wrapper(params, force=False, **kwargs):
             fn = params[key]
+            is_feather = fn.suffix == ".fthr"
+            is_parq = fn.suffix == ".parq"
+
+            if not is_feather and not is_parq:
+                raise ValueError(f"Unsupported data type: {fn}")
+
             if fn.exists() and not force:
-                return feather.read_dataframe(fn)
+                if is_feather:
+                    return pd.read_feather(fn)
+                else:
+                    return pd.read_parquet(fn)
             output = f(params, force, **kwargs)
-            feather.write_dataframe(output, fn)
+            if is_feather:
+                output.to_feather(fn)
+            else:
+                output.to_parquet(fn)
             return output
 
         return wrapper

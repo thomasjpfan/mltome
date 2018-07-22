@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from mltome.cache import from_dataframe_cache
 
@@ -10,6 +11,12 @@ def get_target(params, force=False, **kwargs):
     multiplier = params['multiplier']
     df = pd.DataFrame({"a": [1, 2, 3]})
     return multiplier * df
+
+
+def test_dataframe_cache_unsupported_datatype(tmpdir):
+    param = {'target': Path('hello.world'), 'multiplier': 2}
+    with pytest.raises(ValueError):
+        get_target(param)
 
 
 def test_dataframe_cache_saves_to_cache(tmpdir):
