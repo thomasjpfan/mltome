@@ -89,13 +89,14 @@ def lr_find(net_cls,
             y,
             start_lr=1e-5,
             end_lr=10,
-            scale_linear=False):
+            scale_linear=False,
+            **kwargs):
     lr_finder = ('lr_finder',
                  LRFinder(
                      start_lr=start_lr,
                      end_lr=end_lr,
                      scale_linear=scale_linear))
-    lr_recorder = ('lr_recorder', LRRecorder())
+    lr_recorder = ('lr_recorder', LRRecorder(per_epoch=False))
     callbacks = [lr_finder, lr_recorder]
 
     net = net_cls(
@@ -104,7 +105,8 @@ def lr_find(net_cls,
         max_epochs=1,
         batch_size=batch_size,
         callbacks=callbacks,
-        train_split=None)
+        train_split=None,
+        **kwargs)
 
     with suppress(ValueError):
         net.fit(X, y)
