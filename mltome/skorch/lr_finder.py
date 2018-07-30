@@ -15,12 +15,12 @@ class LRFinder(Callback):
         self.scale_linear = scale_linear
 
         self.lr_multiplier = None
-        self.warm_start = 10
+        self.warm_start = warm_start
         self.final_valid_batch_idx = None
 
     def on_train_begin(self, net, X, **kwargs):
         self.best_loss = 1e9
-        self.total_samples = len(X)
+        self.total_samples = net.max_epochs * len(X)
         self.best_batch_idx = 0
 
         optimizer = net.optimizer_
@@ -86,7 +86,8 @@ def lr_find(net_cls,
             criterion,
             batch_size,
             X,
-            y,
+            iterations,
+            y=None,
             start_lr=1e-5,
             end_lr=10,
             scale_linear=False,
@@ -99,10 +100,12 @@ def lr_find(net_cls,
     lr_recorder = ('lr_recorder', LRRecorder(per_epoch=False))
     callbacks = [lr_finder, lr_recorder]
 
+    epochs = iterations // len(X)
+
     net = net_cls(
         module,
         criterion=criterion,
-        max_epochs=1,
+        max_epochs=epochs,
         batch_size=batch_size,
         callbacks=callbacks,
         train_split=None,
@@ -122,8 +125,8 @@ def plot_lr(history, lr_finder, ax=None):
 
     n_skip = lr_finder.warm_start
 
-    losses = history[-1, 'batches', 'train_loss'][n_skip:-1]
-    lrs = history[-1, 'batches', 'default_lr'][n_skip:]
+    losses = net_lr.history[:, 'batches', 'train_loss'][0]
+    lrs = net_lr.history[:, 'batches', 'default_lr'][0]
     ax.vlines(lr_finder.best_lr, min(losses), max(losses), color='r')
     ax.set_ylim(min(losses), max(losses))
     ax.set_xlabel("Learning rate (log-scaled)")
