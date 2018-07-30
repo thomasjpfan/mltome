@@ -123,10 +123,8 @@ def plot_lr(history, lr_finder, ax=None):
     if not lr_finder.scale_linear:
         ax.set_xscale('log')
 
-    n_skip = lr_finder.warm_start
-
-    losses = net_lr.history[:, 'batches', 'train_loss'][0]
-    lrs = net_lr.history[:, 'batches', 'default_lr'][0]
+    losses = history[:, 'batches', 'train_loss'][0]
+    lrs = history[:, 'batches', 'default_lr'][0]
     ax.vlines(lr_finder.best_lr, min(losses), max(losses), color='r')
     ax.set_ylim(min(losses), max(losses))
     ax.set_xlabel("Learning rate (log-scaled)")
