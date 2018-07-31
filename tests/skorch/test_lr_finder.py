@@ -26,6 +26,6 @@ def data():
 def test_lr_find(data):
     X, y = data
     net, lr_finder = lr_find(NeuralNetRegressor, MyModule, nn.MSELoss, 100, X,
-                             y)
+                             1000, y)
 
     assert net.max_epochs == 1
