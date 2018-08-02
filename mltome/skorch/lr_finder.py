@@ -1,7 +1,6 @@
 from contextlib import suppress
 
 import numpy as np
-import matplotlib.pyplot as plt
 from skorch.callbacks.base import Callback
 
 from .callbacks import LRRecorder
@@ -117,9 +116,7 @@ def lr_find(net_cls,
     return net, lr_finder[1]
 
 
-def plot_lr(history, lr_finder, ax=None):
-    if ax is None:
-        _, ax = plt.subplots()
+def plot_lr(history, lr_finder, ax):
     if not lr_finder.scale_linear:
         ax.set_xscale('log')
 
