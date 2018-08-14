@@ -4,15 +4,17 @@ from .skorch.callbacks import MetricsLogger
 
 class NeptuneObserver(RunObserver):
 
-    def __init__(self, ctx):
+    def __init__(self, ctx, model_id_key, tags_key):
         super().__init__()
         self.ctx = ctx
+        self.model_id_key = model_id_key
+        self.tags_key = tags_key
 
     def started_event(self, ex_info, command, host_info, start_time,
                       config, meta_info, _id):
-        self.ctx.properties['model_id'] = config['model_id'] + '_' + command
+        self.ctx.properties[self.model_id_key] = config[self.model_id_key] + '_' + command
 
-        tags = config.get("tags") or []
+        tags = config.get(self.tags_key) or []
         for tag in tags:
             self.ctx.tags.append(tag)
 

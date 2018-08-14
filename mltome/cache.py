@@ -23,8 +23,8 @@ def from_dataframe_cache(key):
         @wraps(f)
         def wrapper(params, force=False, **kwargs):
             fn = params[key]
-            is_feather = fn.suffix == ".fthr"
-            is_parq = fn.suffix == ".parq"
+            is_feather = fn.suffix in [".fthr"]
+            is_parq = fn.suffix in [".parq"]
 
             if not is_feather and not is_parq:
                 raise ValueError(f"Unsupported data type: {fn}")

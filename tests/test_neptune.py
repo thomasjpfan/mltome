@@ -5,7 +5,7 @@ from mltome.neptune import NeptuneObserver, NeptuneSkorchCallback
 
 def test_neptuneobserver():
     ctx_mock = NonCallableMagicMock()
-    no = NeptuneObserver(ctx_mock)
+    no = NeptuneObserver(ctx_mock, 'model_id', 'tags')
 
     no.started_event(None, 'train', None, None, {
         'model_id': 'id1',
