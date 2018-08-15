@@ -115,10 +115,19 @@ class PushoverObserver(RunObserver):
         except KeyError:
             self.model_id = f'{_id}_{command}'
 
+        if command == 'train':
+            self.prefix = "Finished training"
+        elif command == 'train_hp':
+            self.prefix = "Finished hyperparameter search"
+        elif command == 'predict':
+            self.prefix = "Finished prediction"
+        else:
+            self.prefix = "Finished"
+
     def completed_event(self, stop_time, result):
         if not result or len(result) != 2:
             return
         val, train = result
-        msg = (f'Finished training, model_id: {self.model_id}, '
-               f'Valid score: {val}, Train score: {train}')
+        msg = (f'{self.prefix}, model_id: {self.model_id}, '
+               f'Valid score: {val:0.6}, Train score: {train:0.6}')
         self.p.notify(message=msg, **self.auth_dict)

@@ -153,26 +153,35 @@ def test_artifactobserver_train_with_dir(log, tmpdir):
     assert os.path.exists(ao.val_test_score_fn)
 
 
-def test_pushoverobserver():
+@pytest.mark.parametrize('command,prefix',
+                         [('train', 'Finished training'),
+                          ('train_hp', 'Finished hyperparameter search'),
+                          ('predict', "Finished prediction"),
+                          ('wow', "Finished")])
+def test_pushoverobserver(command, prefix):
     pushover_mock = Mock()
     po = PushoverObserver(pushover_mock, 'tf', '123')
-    po.started_event(None, 'train', None, None, {'model_id': 'hello'}, None,
+    po.started_event(None, command, None, None, {'model_id': 'hello'}, None,
                      'a_id')
 
     po.completed_event(None, [0.5, 0.3])
-    msg = ('Finished training, model_id: hello_train, '
-           'Valid score: 0.5, Train score: 0.3')
+    msg = (f'{prefix}, model_id: hello_{command}, '
+           f'Valid score: 0.5, Train score: 0.3')
     pushover_mock.notify.assert_called_once_with(
         message=msg, user='tf', token='123')
 
 
-def test_pushoverobserver_no_model_id():
+@pytest.mark.parametrize('command,prefix',
+                         [('train', 'Finished training'),
+                          ('train_hp', 'Finished hyperparameter search'),
+                          ('predict', "Finished prediction")])
+def test_pushoverobserver_no_model_id(command, prefix):
     pushover_mock = Mock()
     po = PushoverObserver(pushover_mock, 'tf', '123')
-    po.started_event(None, 'train', None, None, {}, None, 'a_id')
+    po.started_event(None, command, None, None, {}, None, 'a_id')
 
     po.completed_event(None, [0.5, 0.3])
-    msg = ('Finished training, model_id: a_id_train, '
-           'Valid score: 0.5, Train score: 0.3')
+    msg = (f'{prefix}, model_id: a_id_{command}, '
+           f'Valid score: 0.5, Train score: 0.3')
     pushover_mock.notify.assert_called_once_with(
         message=msg, user='tf', token='123')
