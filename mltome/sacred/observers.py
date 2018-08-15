@@ -108,9 +108,17 @@ class PushoverObserver(RunObserver):
         self.p = notifer
         self.auth_dict = {'user': user, 'token': token}
 
+    def started_event(self, ex_info, command, host_info, start_time, config,
+                      meta_info, _id):
+        try:
+            self.model_id = config['model_id'] + '_' + command
+        except KeyError:
+            self.model_id = f'{_id}_{command}'
+
     def completed_event(self, stop_time, result):
         if not result or len(result) != 2:
             return
         val, train = result
-        msg = f'Valid score: {val}, Train score: {train}'
+        msg = (f'Finished training, model_id: {self.model_id}, '
+               f'Valid score: {val}, Train score: {train}')
         self.p.notify(message=msg, **self.auth_dict)

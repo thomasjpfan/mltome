@@ -153,11 +153,26 @@ def test_artifactobserver_train_with_dir(log, tmpdir):
     assert os.path.exists(ao.val_test_score_fn)
 
 
-def test_pushoverobserver(monkeypatch):
+def test_pushoverobserver():
     pushover_mock = Mock()
     po = PushoverObserver(pushover_mock, 'tf', '123')
+    po.started_event(None, 'train', None, None, {'model_id': 'hello'}, None,
+                     'a_id')
 
     po.completed_event(None, [0.5, 0.3])
-    msg = 'Valid score: 0.5, Train score: 0.3'
+    msg = ('Finished training, model_id: hello_train, '
+           'Valid score: 0.5, Train score: 0.3')
+    pushover_mock.notify.assert_called_once_with(
+        message=msg, user='tf', token='123')
+
+
+def test_pushoverobserver_no_model_id():
+    pushover_mock = Mock()
+    po = PushoverObserver(pushover_mock, 'tf', '123')
+    po.started_event(None, 'train', None, None, {}, None, 'a_id')
+
+    po.completed_event(None, [0.5, 0.3])
+    msg = ('Finished training, model_id: a_id_train, '
+           'Valid score: 0.5, Train score: 0.3')
     pushover_mock.notify.assert_called_once_with(
         message=msg, user='tf', token='123')
