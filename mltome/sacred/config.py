@@ -9,8 +9,8 @@ def add_pushover_observer(observers, pushover_user_token, pushover_token):
 
     if pushover_user_token and pushover_token:
         from notifiers.providers.pushover import Pushover
-        from mltome.sacred.observers import NeptuneObserver
-        o = NeptuneObserver(Pushover(), pushover_user_token, pushover_token)
+        from mltome.sacred.observers import PushoverObserver
+        o = PushoverObserver(Pushover(), pushover_user_token, pushover_token)
         observers.append(o)
 
 

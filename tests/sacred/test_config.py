@@ -1,6 +1,4 @@
-import logging
-
-from mltome.sacred.config import (add_monogodb, add_pushover_handler,
+from mltome.sacred.config import (add_monogodb, add_pushover_observer,
                                   add_neptune_observers)
 
 
@@ -10,13 +8,10 @@ def test_add_monogodb():
     assert len(obs) == 1
 
 
-def test_add_pushover_handler():
-    log = logging.getLogger('config')
-
-    assert not log.handlers
-    add_pushover_handler(log, 'push_user', 'token')
-
-    assert log.handlers
+def test_add_pushover_observer():
+    obs = []
+    add_pushover_observer(obs, 'push_user', 'token')
+    assert obs
 
 
 def test_neptune_observers():
