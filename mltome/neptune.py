@@ -12,7 +12,8 @@ class NeptuneObserver(RunObserver):
 
     def started_event(self, ex_info, command, host_info, start_time,
                       config, meta_info, _id):
-        self.ctx.properties[self.model_id_key] = config[self.model_id_key] + '_' + command
+        self.ctx.properties[self.model_id_key] = (
+            f'{config[self.model_id_key]}_{command}')
 
         tags = config.get(self.tags_key) or []
         for tag in tags:
