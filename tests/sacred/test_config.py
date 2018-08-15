@@ -1,5 +1,4 @@
 import logging
-from sacred import Experiment
 
 from mltome.sacred.config import (add_monogodb, add_pushover_handler,
                                   add_neptune_observers)
