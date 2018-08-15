@@ -3,10 +3,12 @@ import logging
 import csv
 from datetime import datetime
 from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
 
-from mltome.sacred.observers import CSVObserver, ArtifactObserver
+from mltome.sacred.observers import (CSVObserver, ArtifactObserver,
+                                     PushoverObserver)
 
 
 @pytest.fixture
@@ -149,3 +151,13 @@ def test_artifactobserver_train_with_dir(log, tmpdir):
 
     ao.completed_event(None, [1, 2])
     assert os.path.exists(ao.val_test_score_fn)
+
+
+def test_pushoverobserver(monkeypatch):
+    pushover_mock = Mock()
+    po = PushoverObserver(pushover_mock, 'tf', '123')
+
+    po.completed_event(None, [0.5, 0.3])
+    msg = 'Valid score: 0.5, Train score: 0.3'
+    pushover_mock.notify.assert_called_once_with(
+        message=msg, user='tf', token='123')

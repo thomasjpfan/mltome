@@ -101,3 +101,16 @@ class ArtifactObserver(RunObserver):
             return
         val_train_score = np.array(result)
         np.savetxt(self.val_test_score_fn, val_train_score)
+
+
+class PushoverObserver(RunObserver):
+    def __init__(self, notifer, user, token):
+        self.p = notifer
+        self.auth_dict = {'user': user, 'token': token}
+
+    def completed_event(self, stop_time, result):
+        if not result or len(result) != 2:
+            return
+        val, train = result
+        msg = f'Valid score: {val}, Train score: {train}'
+        self.p.notify(message=msg, **self.auth_dict)
