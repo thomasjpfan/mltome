@@ -27,7 +27,7 @@ setup(
     author='Thomas Fan',
     author_email='thomasjpfan@gmail.com',
     url='https://github.com/thomasjpfan/mltome',
-    packages=find_packages(include=['mltome']),
+    packages=find_packages(),
     install_requires=install_requires,
     include_package_data=True,
     python_requires='>=3.5',
