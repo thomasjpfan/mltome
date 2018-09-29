@@ -12,6 +12,5 @@ dependencies:
   - feather-format=0.4.*
   - pyyaml=3.12
   - pip:
-    - skorch==0.2.0
-    - munch==2.3.2
-    - sacred==0.7.3
+      - munch==2.3.2
+      - sacred==0.7.3

@@ -25,15 +25,6 @@ You can install mltome directly from pypi:
 instructions for PyTorch, visit the `PyTorch website
 <http://pytorch.org/>`__.
 
-Additional Installation
------------------------
-
-- ``mltome.skorch.TensorboardXLogger`` - ``pip install tensorboardX``
-- ``mltome.neptune.NeptuneSkorchCallback`` - ``pip install neptune-cli``
-- ``mltome.skorch.callbacks.HistorySaver`` - ``pip install git+https://github.com/dnouri/skorch@24ac0d1392306da2337174eba206446fab7b179c``
-- ``mltome.config.add_pushover_observer`` - ``pip install notifiers``
-- ``mltome.config.add_monogodb`` - ``pip install pymongo``
-
 Development
 -----------
 
