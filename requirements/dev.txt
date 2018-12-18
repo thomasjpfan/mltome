@@ -3,6 +3,3 @@ pytest>=3.3.2
 twine>=1.9.1
 pytest-cov>=2.5.1
 codecov>=2.0.15
-tensorboardX>=1.2
-pymongo>=3.7.*
-notifiers>=0.7.*
