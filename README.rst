@@ -19,11 +19,9 @@ You can install mltome directly from pypi:
 
 .. code-block:: bash
 
-    pip install git+https://github.com/thomasjpfan/mltome
+    pip install mltome
 
-- ``mltome.pytorch`` - For installation
-instructions for PyTorch, visit the `PyTorch website
-<http://pytorch.org/>`__.
+- ``mltome.pytorch`` - For installation instructions for PyTorch, visit the `PyTorch website <http://pytorch.org/>`__.
 
 Development
 -----------
