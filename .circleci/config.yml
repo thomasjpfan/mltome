@@ -85,11 +85,11 @@ workflows:
       - test_py37
   taggedbuild:
     jobs:
-      - test_py36
+      - test_py36:
           filters:
             tags:
               only: /[0-9]+(\.[0-9]+)*/
-      - test_py37
+      - test_py37:
           filters:
             tags:
               only: /[0-9]+(\.[0-9]+)*/
