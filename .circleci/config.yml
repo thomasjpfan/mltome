@@ -78,6 +78,7 @@ jobs:
             twine upload dist/*
 
 workflows:
+  version: 2
   buildall:
     jobs:
       - test_py36
