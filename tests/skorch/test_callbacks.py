@@ -9,7 +9,6 @@ import torch.nn as nn
 from skorch.net import NeuralNet
 from mltome.skorch.callbacks import LRRecorder
 from mltome.skorch.callbacks import TensorboardXLogger
-from mltome.skorch.callbacks import HistorySaver
 
 
 class MyModule(nn.Module):
@@ -62,7 +61,7 @@ def test_lr_recorder_default_lr_per_batch(data):
         batch_size=100)
     net.fit(X, y)
 
-    lrs_per_epoch = net.history[:, 'batches', 'default_lr']
+    lrs_per_epoch = net.history[:, 'batches', :, 'default_lr']
     for lr in lrs_per_epoch:
         assert lr == [0.1] * 10
 
@@ -110,29 +109,13 @@ def test_lr_recorder_custom_lr_per_batch(data):
         optimizer__param_groups=param_group)
     net.fit(X, y)
 
-    lrs_per_epoch_layer1 = net.history[:, 'batches', 'layer1.*']
+    lrs_per_epoch_layer1 = net.history[:, 'batches', :, 'layer1.*']
     for lr in lrs_per_epoch_layer1:
         assert lr == [0.01] * 10
 
-    lrs_per_epoch_default = net.history[:, 'batches', 'default_lr']
+    lrs_per_epoch_default = net.history[:, 'batches', :, 'default_lr']
     for lr in lrs_per_epoch_default:
         assert lr == [0.1] * 10
-
-
-def test_history_saver(data, tmpdir):
-    history_fn = str(tmpdir.mkdir('history').join('history.json'))
-
-    assert not os.path.exists(history_fn)
-    module = MyModule()
-    history_saver = HistorySaver(history_fn)
-
-    net = NeuralNet(
-        module, torch.nn.MSELoss, callbacks=[history_saver], max_epochs=1)
-
-    X, y = data
-    net.fit(X, y)
-
-    assert os.path.exists(history_fn)
 
 
 def test_tensorboard_logger(monkeypatch, data, tmpdir):
@@ -165,11 +148,15 @@ def test_tensorboard_logger(monkeypatch, data, tmpdir):
 
     net.fit(X, y)
 
-    batch_calls = [call('batch/train_loss', ANY, i) for i in range(20)]
+    batch_calls = [call('batch/train_loss', ANY, i) for i in range(8)]
+    batch_calls += [call('batch/train_loss', ANY, i) for i in range(10, 18)]
     epoch_calls = [call('epoch/valid_loss', ANY, i) for i in range(1, 3)]
     add_scalar_mock.assert_has_calls(batch_calls + epoch_calls, any_order=True)
 
-    batch_group_calls = [call('batch_train_loss', ANY, i) for i in range(20)]
+    batch_group_calls = [call('batch_train_loss', ANY, i) for i in range(8)]
+    batch_group_calls += [
+        call('batch_train_loss', ANY, i) for i in range(10, 18)
+    ]
     epoch_group_calls = [call('epoch_valid_loss', ANY, i) for i in range(1, 3)]
     add_scalars_mock.assert_has_calls(
         batch_group_calls + epoch_group_calls, any_order=True)

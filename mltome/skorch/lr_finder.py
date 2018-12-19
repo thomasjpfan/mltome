@@ -17,6 +17,9 @@ class LRFinder(Callback):
         self.warm_start = warm_start
         self.final_valid_batch_idx = None
 
+    def initialize(self):
+        self.batch_idx_ = 0
+
     def on_train_begin(self, net, X, **kwargs):
         self.best_loss = 1e9
         self.total_samples = net.max_epochs * len(X)
@@ -37,17 +40,16 @@ class LRFinder(Callback):
             if not self.scale_linear:
                 self.lr_multiplier = ratio**(1 / num_of_batches)
 
-        batch_idx = self._get_batch_idx(net)
-        self.batch_step(batch_idx)
+        self.batch_step(self.batch_idx_)
 
     def on_batch_end(self, net, **kwargs):
-        batch_idx = self._get_batch_idx(net)
-        loss = net.history[-1, 'batches', 'train_loss', -1]
+        loss = net.history[-1, 'batches', -1, 'train_loss']
         if not np.isfinite(loss) or loss > 4 * self.best_loss:
             raise ValueError("loss is too big")
-        if loss < self.best_loss and batch_idx > self.warm_start:
+        if loss < self.best_loss and self.batch_idx_ > self.warm_start:
             self.best_loss = loss
-            self.best_lr = self.get_lr(batch_idx)
+            self.best_lr = self.get_lr(self.batch_idx_)
+        self.batch_idx_ += 1
 
     def _format_lrs(self, name, optimizer, lr):
         if isinstance(lr, (list, tuple)):
@@ -70,14 +72,6 @@ class LRFinder(Callback):
         if not self.scale_linear:
             mult = self.lr_multiplier**(batch_idx + 1)
         return self.start_lrs * mult
-
-    def _get_batch_idx(self, net):
-        if not net.history:
-            return -1
-        epoch = len(net.history) - 1
-        current_batch_idx = len(net.history[-1, 'batches']) - 1
-        batch_cnt = len(net.history[-2, 'batches']) if epoch >= 1 else 0
-        return epoch * batch_cnt + current_batch_idx
 
 
 def lr_find(net_cls,
