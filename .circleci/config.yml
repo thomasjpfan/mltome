@@ -44,6 +44,12 @@ jobs:
   test_py36:
     environment:
       - PY_VERSION: 3.6
+      - PYTORCH_WHEEL: https://download.pytorch.org/whl/cpu/torch-1.0.0-cp36-cp36m-linux_x86_64.whl
+    <<: *test_py
+  test_py37:
+    environment:
+      - PY_VERSION: 3.7
+      - PYTORCH_WHEEL: https://download.pytorch.org/whl/cpu/torch-1.0.0-cp37-cp37m-linux_x86_64.whl
     <<: *test_py
   deploy:
     docker:
