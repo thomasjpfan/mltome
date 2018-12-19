@@ -1,4 +1,3 @@
-import os
 from unittest.mock import ANY, call, Mock
 
 import pytest
