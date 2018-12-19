@@ -78,11 +78,11 @@ jobs:
 
 workflows:
   version: 2
-  build-all:
+  buildall:
     jobs:
       - test_py36
       - test_py37
-  tagged-build:
+  taggedbuild:
     jobs:
       - test_py36
           filters:
