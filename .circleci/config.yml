@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 
 test_py: &test_py
   docker:
@@ -78,7 +78,7 @@ jobs:
             twine upload dist/*
 
 workflows:
-  version: 2.1
+  version: 2
   buildall:
     jobs:
       - test_py36
