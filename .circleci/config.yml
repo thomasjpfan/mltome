@@ -1,3 +1,5 @@
+version: 2.1
+
 test_py: &test_py
   docker:
     - image: circleci/python:$PY_VERSION
@@ -39,7 +41,6 @@ test_py: &test_py
             codecov
           fi
 
-version: 2
 jobs:
   test_py36:
     environment:
@@ -77,7 +78,7 @@ jobs:
             twine upload dist/*
 
 workflows:
-  version: 2
+  version: 2.1
   buildall:
     jobs:
       - test_py36
