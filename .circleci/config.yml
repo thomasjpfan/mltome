@@ -81,6 +81,7 @@ workflows:
   buildall:
     jobs:
       - test_py36
+      - test_py37
       - deploy:
           requires:
             - test_py36
